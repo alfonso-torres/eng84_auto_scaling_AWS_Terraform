@@ -6,8 +6,8 @@
 
 - [Application Load Balancer using AWS](#application-load-balancer-using-aws)
 - [Auto Scaling Group using AWS](#auto-scaling-group-using-aws)
-- [Application Load Balancer using Terraform]
-- [Auto Scaling Group using Terraform]
+- [Application Load Balancer and Auto Scaling Group using Terraform](#application-load-balancer-and-auto-scaling-group-using-terraform)
+
 
 ## Application Load Balancer using AWS
 
@@ -34,6 +34,25 @@
 
 ## Auto Scaling Group using AWS
 
-## Application Load Balancer using Terraform
+1. Terminate the instances that you are running. Don't worry they'll be recreated soon and make sure you have created your ALB like the previous step.
+2. Go to section `Auto Scaling Groups` inside `EC2`.
+3. Click on `Create an Auto Scaling group`.
+4. Tag a name: `eng84_jose_asg_app`.
+5. Click on `Create a launch template`:
+	- Tag a name and description: `eng84_jose_launch_template`.
+	- AMI - required: select your web app AMI.
+	- Instance type: `t2.micro`
+	- Key pair: select your key pair to be able to connect.
+	- Networking Settings: `VPC`.
+	- Network interfaces: in security groups select your security group of the app that we have created before and enable auto-assign public ip.
+	- Expand advanced details: In the tab `User data`, copy and paste your contents from your provision.sh file to run the app.
+6. Select the launch template that you have created and go to the next step: `Configure settings`.
+7. Select the `VPC` we have created and the three public subnets that we used in the ALB.
+8. In the step `Configure advanced options`, select the aplication load balancer we have created previously.
+9. Health checks: `EC2` and `60 seconds`.
+10. In the next step `Configure group size and scaling policies`, select `3` in desired capaticty, minimun capacity and maximum capicity.
+11. In the next step `Add notifications`, leave empty.
+16. In the next step `Add tags`, create a new one for the instances. Key `name`, Value `eng84_jose_app_asg`, Tag new instances `Yes`.
+17. Finally, click on `Create Auto Scaling group`.
 
-## Auto Scaling Group using Terraform
+## Application Load Balancer and Auto Scaling Group using Terraform
